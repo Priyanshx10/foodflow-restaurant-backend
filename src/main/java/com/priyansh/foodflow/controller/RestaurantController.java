@@ -76,4 +76,35 @@ public class RestaurantController {
 
         return ResponseEntity.noContent().build();
     }
+
+    // Search restaurants by name
+    @GetMapping("/search/name")
+    public ResponseEntity<List<Restaurant>> searchByName(
+            @RequestParam String value) {
+
+        return ResponseEntity.ok(
+                restaurantService.searchByName(value)
+        );
+    }
+
+    // Filter restaurants by cuisine
+    @GetMapping("/search/cuisine")
+    public ResponseEntity<List<Restaurant>> filterByCuisine(
+            @RequestParam String value) {
+
+        return ResponseEntity.ok(
+                restaurantService.filterByCuisine(value)
+        );
+    }
+
+    // Filter restaurants by city
+    @GetMapping("/search/city")
+    public ResponseEntity<List<Restaurant>> filterByCity(
+            @RequestParam String value) {
+
+        return ResponseEntity.ok(
+                restaurantService.filterByCity(value)
+        );
+    }
+
 }

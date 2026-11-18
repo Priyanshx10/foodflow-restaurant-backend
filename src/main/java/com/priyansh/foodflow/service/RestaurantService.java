@@ -64,4 +64,23 @@ public class RestaurantService {
                         )
                 );
     }
+
+    // Search restaurants by name
+    public List<Restaurant> searchByName(String name) {
+        return restaurantRepository
+                .findByNameContainingIgnoreCase(name);
+    }
+
+    // Filter restaurants by cuisine
+    public List<Restaurant> filterByCuisine(String cuisine) {
+        return restaurantRepository
+                .findByCuisineIgnoreCase(cuisine);
+    }
+
+    // Filter restaurants by city
+    public List<Restaurant> filterByCity(String city) {
+        return restaurantRepository
+                .findByCityIgnoreCase(city);
+    }
+
 }
