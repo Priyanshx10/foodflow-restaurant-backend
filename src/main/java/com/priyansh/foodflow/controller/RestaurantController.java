@@ -1,3 +1,4 @@
+
 package com.priyansh.foodflow.controller;
 
 import com.priyansh.foodflow.model.Restaurant;
@@ -17,7 +18,6 @@ public class RestaurantController {
 
     private final RestaurantService restaurantService;
 
-    // Constructor injection
     public RestaurantController(RestaurantService restaurantService) {
         this.restaurantService = restaurantService;
     }
@@ -37,12 +37,13 @@ public class RestaurantController {
     public ResponseEntity<Restaurant> getRestaurantById(
             @PathVariable String id) {
 
-        return restaurantService.getRestaurantById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Restaurant restaurant =
+                restaurantService.getRestaurantById(id);
+
+        return ResponseEntity.ok(restaurant);
     }
 
-    // POST: Create a new restaurant
+    // POST: Create restaurant
     @PostMapping
     public ResponseEntity<Restaurant> createRestaurant(
             @Valid @RequestBody Restaurant restaurant) {
@@ -52,5 +53,27 @@ public class RestaurantController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(savedRestaurant);
+    }
+
+    // PUT: Update restaurant
+    @PutMapping("/{id}")
+    public ResponseEntity<Restaurant> updateRestaurant(
+            @PathVariable String id,
+            @Valid @RequestBody Restaurant restaurant) {
+
+        Restaurant updatedRestaurant =
+                restaurantService.updateRestaurant(id, restaurant);
+
+        return ResponseEntity.ok(updatedRestaurant);
+    }
+
+    // DELETE: Delete restaurant
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteRestaurant(
+            @PathVariable String id) {
+
+        restaurantService.deleteRestaurant(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
