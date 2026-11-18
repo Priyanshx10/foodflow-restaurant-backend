@@ -1,5 +1,7 @@
+
 package com.priyansh.foodflow.exception;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,7 +14,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Handles validation errors (@Valid)
+    // Handles validation errors
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
@@ -36,7 +38,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(response);
     }
 
-    // Handles malformed JSON request bodies
+    // Handles malformed JSON
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, Object>> handleInvalidJson(
             HttpMessageNotReadableException ex) {
@@ -48,5 +50,20 @@ public class GlobalExceptionHandler {
         response.put("message", "Please provide a valid JSON request body");
 
         return ResponseEntity.badRequest().body(response);
+    }
+
+    // Handles restaurant not found
+    @ExceptionHandler(RestaurantNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleRestaurantNotFound(
+            RestaurantNotFoundException ex) {
+
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        response.put("status", 404);
+        response.put("error", "Not Found");
+        response.put("message", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(response);
     }
 }
