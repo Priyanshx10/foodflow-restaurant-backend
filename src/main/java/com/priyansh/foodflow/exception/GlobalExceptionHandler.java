@@ -38,6 +38,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(response);
     }
 
+        @ExceptionHandler(MenuItemNotFoundException.class)
+        public ResponseEntity<Map<String, String>> handleMenuItemNotFound(
+                MenuItemNotFoundException exception) {
+
+        Map<String, String> error = Map.of(
+                "message", exception.getMessage()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(error);
+        }
+
     // Handles malformed JSON
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, Object>> handleInvalidJson(
