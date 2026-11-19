@@ -4,7 +4,8 @@ package com.priyansh.foodflow.service;
 import com.priyansh.foodflow.exception.RestaurantNotFoundException;
 import com.priyansh.foodflow.model.Restaurant;
 import com.priyansh.foodflow.repository.RestaurantRepository;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,6 +55,10 @@ public class RestaurantService {
         restaurantRepository.delete(existingRestaurant);
     }
 
+    // Retrieve restaurants with pagination and sorting
+    public Page<Restaurant> getRestaurants(Pageable pageable) {
+        return restaurantRepository.findAll(pageable);
+}
     // Find restaurant or throw exception
     private Restaurant getRestaurantOrThrow(String id) {
 
@@ -64,4 +69,23 @@ public class RestaurantService {
                         )
                 );
     }
+
+    // Search restaurants by name
+    public List<Restaurant> searchByName(String name) {
+        return restaurantRepository
+                .findByNameContainingIgnoreCase(name);
+    }
+
+    // Filter restaurants by cuisine
+    public List<Restaurant> filterByCuisine(String cuisine) {
+        return restaurantRepository
+                .findByCuisineIgnoreCase(cuisine);
+    }
+
+    // Filter restaurants by city
+    public List<Restaurant> filterByCity(String city) {
+        return restaurantRepository
+                .findByCityIgnoreCase(city);
+    }
+
 }

@@ -3,7 +3,9 @@ package com.priyansh.foodflow.controller;
 
 import com.priyansh.foodflow.model.Restaurant;
 import com.priyansh.foodflow.service.RestaurantService;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -76,4 +78,44 @@ public class RestaurantController {
 
         return ResponseEntity.noContent().build();
     }
+
+    // Search restaurants by name
+    @GetMapping("/search/name")
+    public ResponseEntity<List<Restaurant>> searchByName(
+            @RequestParam String value) {
+
+        return ResponseEntity.ok(
+                restaurantService.searchByName(value)
+        );
+    }
+
+    // Filter restaurants by cuisine
+    @GetMapping("/search/cuisine")
+    public ResponseEntity<List<Restaurant>> filterByCuisine(
+            @RequestParam String value) {
+
+        return ResponseEntity.ok(
+                restaurantService.filterByCuisine(value)
+        );
+    }
+
+    // Filter restaurants by city
+    @GetMapping("/search/city")
+    public ResponseEntity<List<Restaurant>> filterByCity(
+            @RequestParam String value) {
+
+        return ResponseEntity.ok(
+                restaurantService.filterByCity(value)
+        );
+    }
+    // GET: Retrieve restaurants with pagination and sorting
+        @GetMapping("/page")
+        public ResponseEntity<Page<Restaurant>> getRestaurants(
+                @PageableDefault(size = 10, sort = "name") Pageable pageable) {
+
+        return ResponseEntity.ok(
+            restaurantService.getRestaurants(pageable)
+        );
+}
+
 }
