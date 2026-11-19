@@ -1,10 +1,10 @@
 package com.priyansh.foodflow.service;
 
+import com.priyansh.foodflow.exception.MenuItemNotFoundException;
 import com.priyansh.foodflow.exception.RestaurantNotFoundException;
 import com.priyansh.foodflow.model.MenuItem;
 import com.priyansh.foodflow.repository.MenuItemRepository;
 import com.priyansh.foodflow.repository.RestaurantRepository;
-import com.priyansh.foodflow.exception.MenuItemNotFoundException;
 
 import org.springframework.stereotype.Service;
 
@@ -43,7 +43,7 @@ public class MenuItemService {
 
         return menuItemRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new MenuItemNotFoundException(
                                 "Menu item not found with ID: " + id
                         )
                 );
@@ -112,15 +112,5 @@ public class MenuItemService {
                     "Restaurant not found with ID: " + restaurantId
             );
         }
-    }
-
-    public MenuItem getMenuItemById1(String id) {
-
-    return menuItemRepository.findById(id)
-            .orElseThrow(() ->
-                    new MenuItemNotFoundException(
-                            "Menu item not found with ID: " + id
-                    )
-            );
     }
 }
