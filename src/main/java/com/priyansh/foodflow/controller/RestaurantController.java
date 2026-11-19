@@ -3,7 +3,9 @@ package com.priyansh.foodflow.controller;
 
 import com.priyansh.foodflow.model.Restaurant;
 import com.priyansh.foodflow.service.RestaurantService;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -106,5 +108,14 @@ public class RestaurantController {
                 restaurantService.filterByCity(value)
         );
     }
+    // GET: Retrieve restaurants with pagination and sorting
+        @GetMapping("/page")
+        public ResponseEntity<Page<Restaurant>> getRestaurants(
+                @PageableDefault(size = 10, sort = "name") Pageable pageable) {
+
+        return ResponseEntity.ok(
+            restaurantService.getRestaurants(pageable)
+        );
+}
 
 }
